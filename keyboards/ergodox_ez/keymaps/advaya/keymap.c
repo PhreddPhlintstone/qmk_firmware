@@ -144,14 +144,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case KC_CAPS: // Sw A
       if (record->event.pressed) {
-	if (rgb_matrix_config.val) {
+        if (host_keyboard_leds() & (1<<USB_LED_CAPS_LOCK)) {
           rgb_matrix_sethsv(rgb_matrix_config.hue, rgb_matrix_config.sat, 0);
+        } else {
+          rgb_matrix_sethsv(rgb_matrix_config.hue, rgb_matrix_config.sat, 255);
+        } 
+          // ergodox_right_led_3_on();
+      }
+      return true;
+     /* 	if (rgb_matrix_config.val) {
+            rgb_matrix_sethsv(rgb_matrix_config.hue, rgb_matrix_config.sat, 0);
         } else {
           rgb_matrix_sethsv(rgb_matrix_config.hue, rgb_matrix_config.sat, 255);
         }
        }
        return true;
-
+      */ 
         /* if (IS_LED_ON(usb_led, USB_LED_CAPS_LOCK)) {
 	  rgblight_mode(1); 
           rgblight_sethsv(24,255,255);
