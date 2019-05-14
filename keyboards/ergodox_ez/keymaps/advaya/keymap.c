@@ -87,6 +87,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 extern bool g_suspend_state;
 extern rgb_config_t rgb_matrix_config;
+int cur_hue; // Sw A
+int cur_val; // Sw A
 
 void keyboard_post_init_user(void) {
   rgb_matrix_enable();
@@ -146,28 +148,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
     	if (rgb_matrix_config.val) {
           rgb_matrix_sethsv(rgb_matrix_config.hue, rgb_matrix_config.sat, 0);
+          cur_val=0;
         } else {
           rgb_matrix_sethsv(rgb_matrix_config.hue, rgb_matrix_config.sat, 255);
+          cur_val=255;
         }
       }
       return false;
     case HSV_172_255_255: // Sw A
       if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(172,255,255);
+        rgb_matrix_sethsv(172,255,255);
+        cur_hue=172;
+        cur_val=255;
       }
       return false;
 
     case KC_CAPS: // Sw A
       if (record->event.pressed) {
         if (host_keyboard_leds() & (1<<USB_LED_CAPS_LOCK)) {
-          rgblight_mode(0);
-          // rgblight_sethsv(27,255,255);
-         // rgb_matrix_sethsv(rgb_matrix_config.hue, rgb_matrix_config.sat, 0);
+          rgb_matrix_sethsv(cur_hue, rgb_matrix_config.sat, cur_val);
         } else {
           rgblight_mode(1);
-          rgblight_sethsv(27,255,255);
-         // rgb_matrix_sethsv(rgb_matrix_config.hue, rgb_matrix_config.sat, 255);
+          rgblight_sethsv(27,255,255);//sets base color to orange
         } 
       }
       return true;
