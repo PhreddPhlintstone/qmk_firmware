@@ -25,7 +25,7 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_ergodox(
-    KC_ESCAPE,LCTL(KC_1),LCTL(KC_2),LCTL(KC_3),LCTL(KC_4),LCTL(KC_5),LCTL(KC_6),
+    LCTL_T(KC_ESCAPE),LCTL(KC_1),LCTL(KC_2),LCTL(KC_3),LCTL(KC_4),LCTL(KC_5),LCTL(KC_6),
     // KC_TAB,KC_CAPSLOCK,KC_Q,KC_W,KC_E,KC_R,KC_T,TT(1),
     //KC_CAPSLOCK,KC_A,KC_S,KC_D,KC_F,KC_G,
     KC_TAB,KC_Q,KC_W,KC_E,KC_R,KC_T,TT(1),
@@ -33,7 +33,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LSHIFT,KC_Z,KC_X,KC_C,KC_V,KC_B,LGUI(KC_KP_MINUS),
     LALT(LGUI(KC_C)),LALT(LGUI(KC_V)),LALT(LGUI(LSFT(KC_V))),KC_UP,KC_DOWN,
 
-    KC_LCTRL,KC_TRANSPARENT,KC_TRANSPARENT,LGUI_T(KC_SPACE),LALT_T(KC_TAB),KC_HYPR,
+    KC_LCTRL,TT(3),KC_MEH,LGUI_T(KC_SPACE),LALT_T(KC_TAB),KC_HYPR,
    
     LCTL(KC_7),LCTL(KC_8),LCTL(KC_9),LCTL(KC_0),LALT(LCTL(KC_1)),LALT(LCTL(KC_2)),KC_MINUS,
     TT(2),KC_Y,KC_U,KC_I,KC_O,KC_P,KC_BSLASH,
@@ -41,7 +41,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     LGUI(KC_KP_PLUS),KC_N,KC_M,KC_COMMA,KC_DOT,RCTL_T(KC_SLASH),KC_RSHIFT,
     KC_LEFT,KC_RIGHT,KC_RGUI,KC_RALT,RSFT(KC_RALT),
 
-    KC_LALT,KC_RCTRL,KC_TRANSPARENT,KC_HYPR,LT(2,KC_BSPACE),LT(1,KC_SPACE)
+    KC_LALT,KC_RCTRL,KC_MEH,KC_HYPR,LT(2,KC_BSPACE),LT(1,KC_SPACE)
     ),
 
   [1] = LAYOUT_ergodox(
@@ -165,10 +165,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_CAPS: // Sw A
       if (record->event.pressed) {
         if (host_keyboard_leds() & (1<<USB_LED_CAPS_LOCK)) {
+          //ergodox_right_led_3_on();
           rgb_matrix_sethsv(cur_hue, rgb_matrix_config.sat, cur_val);
+          //rgblight_sethsv();
+          //ergodox_right_led_2_on(); // Really messes up the KB
+          //if (IS_LED_ON(usb_led, USB_LED_CAPS_LOCK)) {
+            //writePinLow(B1);
+          //} else {
+            //writePinHigh(B2);
+          //} */
         } else {
+          //ergodox_right_led_3_off();
           rgblight_mode(1);
           rgblight_sethsv(27,255,255);//sets base color to orange
+          //ergodox_right_led_2_off(); // Really messes up the KB
         } 
       }
       return true;
